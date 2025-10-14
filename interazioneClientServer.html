@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Interazione con il client e il server</title>
+  <script>
+    "use strict";
+    function gestoreRicezione(messaggioRicevuto){
+    document.getElementById("ricezione").textContent += messaggioRicevuto.data + "\n"; // [1]
+    }
+
+    let ws = new WebSocket("ws://10.1.0.52:8090/echo"); // [2]
+    ws.onmessage = gestoreRicezione;
+
+    function inviaAlServer(){
+    let messaggioDaInviare = document.getElementById("nomeUtente").value;
+    ws.send( messaggioDaInviare );  // [3]
+    }
+    function chiudiLaConnessione(){
+    ws.close();  // [4]
+    }
+    function interazioneConIlServer(){
+        
+    }
+</script>
+</head>
+<body>
+  <textarea id="ricezione" readonly></textarea><br>
+  <h1>Dialogo server-client</h1>
+  <p>nome utente</p> <input id="nomeUtente" type="text">
+
+  <button onClick="inviaAlServer()">invia!</button>
+  <button onClick="chiudiLaConnessione()">chiudi</button>
+</body>
+</html>
