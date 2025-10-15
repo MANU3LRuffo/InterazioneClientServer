@@ -3,6 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>Interazione con il client e il server</title>
+  <style>
+    textarea {
+      width: 300px;
+      height: 200px;
+      margin-bottom: 10px;
+      display: none;}
+    input {
+      width: 300px;
+      margin-bottom: 10px;
+      display: block;
+      overflow: hidden;
+    }
+  </style>
   <script>
     "use strict";
     function gestoreRicezione(messaggioRicevuto){
@@ -10,27 +23,15 @@
     }
 
     let ws = new WebSocket("ws://10.1.0.52:8090/chat25/5i2");
-    ws.onmessage = gestoreRicezione;
 
     function inviaAlServer(){
     let nomeUtenteDaInserire = document.getElementById("nomeUtente");
     let passwordDaInserire = document.getElementById("password");
+    let messaggioDaInviare = "A" + "|" +
+    document.getElementById("nomeUtente").value + "|" +document.getElementById("password").value;
+    ws.send(messaggioDaInviare);
 
     }
-    function chiudiLaConnessione(){
-    ws.close();
-    }
-
-    function accedi(){
-    let nomeUtenteDaInserire = document.getElementById("nomeUtente");
-    let passwordDaInserire = document.getElementById("password");
-    let messaggioDaInviare = document.getElementById("messaggio");
-    ws.send("accedi " + nomeUtenteDaInserire.value + " " + passwordDaInserire.value);
-    messaggioDaInviare.style.display = "block";
-    nomeUtenteDaInserire.style.display = "none";
-    passwordDaInserire.style.display = "none";
-
-    } 
 </script>
 </head>
 <body>
@@ -39,9 +40,7 @@
   <p>nome utente</p> <input id="nomeUtente" type="text">
   <p>password</p> <input id="password" type="text" style="overflow: hidden;">
   <p>invia messaggio</p> <input id="messaggio" type="text" style="display: none;">
-  <button onclick="accedi()">accedi</button>
   <button onClick="inviaAlServer()">invia!</button>
   <button onClick="chiudiLaConnessione()">chiudi</button>
 </body>
 </html>
-
