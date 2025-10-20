@@ -13,7 +13,8 @@
     textarea {
       width: 300px;
       height: 200px;
-      margin-bottom: 10px;}
+      margin-bottom: 10px;
+    }
     input {
       width: 300px;
       margin-bottom: 10px;
@@ -45,15 +46,20 @@
     let messaggioDaInviare = "A" + "|" +
     document.getElementById("nomeUtente").value + "|" +document.getElementById("password").value;
     ws.send(messaggioDaInviare);
+    document.getElementById("ricezione").style.display="block";
+    document.getElementById("nomeUtente&password").style.display="none";
 
     }
 </script>
 </head>
 <body>
   <h1>Dialogo server-client</h1>
-  <textarea id="ricezione" readonly></textarea><br>
-  <p>nome utente</p> <input id="nomeUtente" type="text">
-  <p>password</p> <input id="password" type="text" style="overflow: hidden;">
+  <div id="nomeUtente&password">
+    <p>nome utente</p> <input id="nomeUtente" type="text">
+    <p>password</p> <input id="password" type="text">
+  </div>
+  <p>messaggioDaInviare</p>
+  <textarea id="ricezione" style="display: none;"></textarea><br>
   <button onClick="inviaAlServer()">invia!</button>
   <button onClick="chiudiLaConnessione()">chiudi</button>
 </body>
