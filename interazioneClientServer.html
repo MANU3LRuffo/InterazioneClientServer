@@ -35,7 +35,14 @@
   <script>
     "use strict";
     function gestoreRicezione(messaggioRicevuto){
-    document.getElementById("ricezione").textContent += messaggioRicevuto.data + "\n";
+    document.getElementById("messaggio").textContent += messaggioRicevuto.data + "\n";
+    ws.onmessage=gestoreRicezione;
+    if(messaggioRicevuto.data == "R|ok"){
+
+    }
+    if(messaggioRicevuto.data == "R|no"){
+
+    }
     }
 
     let ws = new WebSocket("ws://10.1.0.52:8090/chat25/5i2");
@@ -48,7 +55,9 @@
     ws.send(messaggioDaInviare);
     document.getElementById("ricezione").style.display="block";
     document.getElementById("nomeUtente&password").style.display="none";
-
+    }
+    function chiudiLaConnessione(){
+    ws.close();  // [4]
     }
 </script>
 </head>
@@ -61,6 +70,5 @@
   <p>messaggioDaInviare</p>
   <textarea id="ricezione" style="display: none;"></textarea><br>
   <button onClick="inviaAlServer()">invia!</button>
-  <button onClick="chiudiLaConnessione()">chiudi</button>
 </body>
 </html>
