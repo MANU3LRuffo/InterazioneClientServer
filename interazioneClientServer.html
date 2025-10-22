@@ -37,17 +37,18 @@
     function gestoreRicezione(messaggioRicevuto){
     document.getElementById("messaggio").textContent += messaggioRicevuto.data + "\n";
     ws.onmessage=gestoreRicezione;
+    console.log(messaggioRicevuto.data);
     if(messaggioRicevuto.data == "R|ok"){
-
+      invioMessaggio();
     }
     if(messaggioRicevuto.data == "R|no"){
-
+      chiudiLaConnessione();
     }
     }
 
     let ws = new WebSocket("ws://10.1.0.52:8090/chat25/5i2");
 
-    function inviaAlServer(){
+    function invioAccesso(){
     let nomeUtenteDaInserire = document.getElementById("nomeUtente");
     let passwordDaInserire = document.getElementById("password");
     let messaggioDaInviare = "A" + "|" +
@@ -55,9 +56,13 @@
     ws.send(messaggioDaInviare);
     document.getElementById("ricezione").style.display="block";
     document.getElementById("nomeUtente&password").style.display="none";
+    document.getElementById("messaggioDaInviare").style.display="block";
     }
     function chiudiLaConnessione(){
-    ws.close();  // [4]
+    ws.close();
+    }
+    function invioMessaggio(){
+
     }
 </script>
 </head>
@@ -67,8 +72,9 @@
     <p>nome utente</p> <input id="nomeUtente" type="text">
     <p>password</p> <input id="password" type="text">
   </div>
-  <p>messaggioDaInviare</p>
+  <p id="messaggioDaInviare" style="display: none;">messaggioDaInviare</p>
   <textarea id="ricezione" style="display: none;"></textarea><br>
-  <button onClick="inviaAlServer()">invia!</button>
+  <button onClick="invioAccesso()" id="invioAccesso">accedi</button>
+  <button onClick="invioMessaggio()" >invia messaggio</button>
 </body>
 </html>
