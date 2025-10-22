@@ -5,10 +5,10 @@
   <title>Interazione con il client e il server</title>
   <style>
     h1{
-      color: dodgerblue;
+      color: black;
     }
     body{
-      background-color: black;
+      background-color: aqua;
     }
     textarea {
       width: 300px;
@@ -21,45 +21,70 @@
       display: block;
       overflow: hidden;
     }
-    p{
-      color: dodgerblue;
+    #nomeUtentePassword{
+      color: black;
       font-size: 25px;
       font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     }
+    input{
+      text-align: center;
+    }
     button{
-      background-color: dodgerblue;
+      background-color: aqua;
       color: black;
       font-size: 22px;
+    }
+    #messaggioDiErrore{
+      font-size: 25px;
+      color: white;
     }
   </style>
   <script>
     "use strict";
-    function gestoreRicezione(messaggioRicevuto){
-    document.getElementById("messaggio").textContent += messaggioRicevuto.data + "\n";
+    //Inizio dialogo
+    let ws = new WebSocket("ws://10.1.0.52:8090/chat25/5i2");
     ws.onmessage=gestoreRicezione;
+    console.log("è iniziato il dialogo")
+
+    function gestoreRicezione(messaggioRicevuto){
+    document.getElementById("ricezione").textContent += messaggioRicevuto.data + "\n";
+    
     console.log(messaggioRicevuto.data);
+
+
     if(messaggioRicevuto.data == "R|ok"){
-      invioMessaggio();
+      cambiaSchermataAccesso();
     }
     if(messaggioRicevuto.data == "R|no"){
+      cambiaSchermataConnessioneFallita();
       chiudiLaConnessione();
     }
     }
-
-    let ws = new WebSocket("ws://10.1.0.52:8090/chat25/5i2");
+    
 
     function invioAccesso(){
     let nomeUtenteDaInserire = document.getElementById("nomeUtente");
     let passwordDaInserire = document.getElementById("password");
-    let messaggioDaInviare = "A" + "|" +
-    document.getElementById("nomeUtente").value + "|" +document.getElementById("password").value;
+    let messaggioDaInviare = "A" + "|" + document.getElementById("nomeUtente").value + 
+    "|" + document.getElementById("password").value;
     ws.send(messaggioDaInviare);
-    document.getElementById("ricezione").style.display="block";
-    document.getElementById("nomeUtente&password").style.display="none";
-    document.getElementById("messaggioDaInviare").style.display="block";
+
     }
     function chiudiLaConnessione(){
-    ws.close();
+      //document.getElementById("ricevuta").textContent="ricevuta: connessione fallita";
+      console.log("non sei riuscito a entrare");
+      ws.close();
+      
+    }
+    function cambiaSchermataAccesso(){
+      document.getElementById("ricezione").style.display="block";
+      document.getElementById("nomeUtentePassword").style.display="none";
+      document.getElementById("messaggioDaInviare").style.display="block";
+    }
+    function cambiaSchermataConnessioneFallita(){
+      document.getElementById("ricezioneMessaggioMessaggioInviare").style.display="none";
+      document.getElementById("messaggioDiErrore").style.display="block";
+
     }
     function invioMessaggio(){
 
@@ -68,13 +93,18 @@
 </head>
 <body>
   <h1>Dialogo server-client</h1>
-  <div id="nomeUtente&password">
+  <div id="nomeUtentePassword">
     <p>nome utente</p> <input id="nomeUtente" type="text">
     <p>password</p> <input id="password" type="text">
   </div>
-  <p id="messaggioDaInviare" style="display: none;">messaggioDaInviare</p>
-  <textarea id="ricezione" style="display: none;"></textarea><br>
+  <div id="ricezioneMessaggioMessaggioInviare">
+    <p id="messaggioDaInviare" style="display: none;">messaggioDaInviare</p>
+    <textarea id="ricezione" readonly style="display: none;"></textarea><br>
+  </div>
+  
   <button onClick="invioAccesso()" id="invioAccesso">accedi</button>
   <button onClick="invioMessaggio()" >invia messaggio</button>
+  <p id="messaggioDiErrore" style="display: none;">
+    DAI SU CHE LA PROSSIMA VOLTA CHE FAI L'ACCESSO CON IL NOME/PASSWORD GIUSTA CE LA FAI</p>
 </body>
 </html>
