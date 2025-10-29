@@ -11,7 +11,7 @@
       background-color: black;
       text-align: center;
     }
-    textarea {
+    div {
       width: 300px;
       height: 200px;
       margin-bottom: 10px;
@@ -19,6 +19,10 @@
       border-color: green;
       color: green;
       margin: auto;
+    }
+    #ricezione{
+      overflow: scroll;
+      border-radius: 10px;
     }
     input {
       width: 300px;
@@ -50,17 +54,17 @@
       font-size: 25px;
       color: red;
     }
-    #messaggioServer{
+    p{
       color: green;
-
     }
   </style>
   <script>
     "use strict";
     //Inizio dialogo
+    let nomeUtente;
     let ws = new WebSocket("ws://10.1.0.52:8090/chat25/5i2");
-    ws.onmessage=gestoreRicezione;
-    console.log("è iniziato il dialogo")
+    ws.onmessage = gestoreRicezione;
+    console.log("è iniziato il dialogo");
 
     function gestoreRicezione(messaggioRicevuto){
     document.getElementById("ricezione").textContent += messaggioRicevuto.data + "\n";
@@ -70,7 +74,6 @@
 
     if(messaggioRicevuto.data == "R|ok"){
       cambiaSchermataAccesso();
-      console.log(new Date());
     }
     if(messaggioRicevuto.data == "R|no"){
       cambiaSchermataConnessioneFallita();
@@ -79,11 +82,10 @@
     }
     
     function invioAccesso(){
-    let nomeUtenteDaInserire = document.getElementById("nomeUtente");
-    let passwordDaInserire = document.getElementById("password");
-    let messaggioDaInviare = "A" + "|" + document.getElementById("nomeUtente").value + 
-    "|" + document.getElementById("password").value;
-    ws.send(messaggioDaInviare);
+    nomeUtente = document.getElementById("nomeUtente").value;
+    let passwordDaInserire = document.getElementById("password").value;
+    let accessoDaInviare = "A" + "|" + nomeUtente + "|" + passwordDaInserire;
+    ws.send(accessoDaInviare);
 
     }
 
@@ -111,7 +113,50 @@
     }
 
     function invioMessaggio(){
+      const data=new Date();
 
+      let dataIntera = (data.getFullYear() + "-" );
+      if(data.getMonth() < 9){
+        dataIntera = dataIntera + "0" +(1+data.getMonth()) + "-";
+      } else{
+        dataIntera = dataIntera +(1 + data.getMonth()) + "-";
+      }
+
+      if(data.getDate() < 10){
+        dataIntera = dataIntera + "0" + data.getDate() + "-";
+      } else{
+        dataIntera = dataIntera + data.getDate() + "-";
+      }
+
+      dataIntera = dataIntera + "T";
+
+      if(data.getHours() < 10){
+        dataIntera = dataIntera + "0" + data.getHours() + ":";
+      } else{
+        dataIntera = dataIntera + data.getHours() + ":";
+      }
+
+      if(data.getMinutes() < 10){
+        dataIntera = dataIntera + "0" + data.getMinutes() + ":";
+      } else{
+        dataIntera = dataIntera + data.getMinutes() + ":";
+      }
+
+      if(data.getSeconds() < 10){
+        dataIntera = dataIntera + "0" + data.getSeconds() + "|";
+      } else{
+        dataIntera = dataIntera + data.getSeconds() + "|";
+      }
+
+      
+      let tempo = dataIntera;
+      let paese = "IT";
+      let tp = "text/plain";
+      let messaggio = document.getElementById("messaggioDaInviare").value ;
+      let messaggioDalServer = "M" + "|" + nomeUtente +
+      "|" + tempo + "|" + paese + "|" + tp + "|" + messaggio;
+      ws.send(messaggioDalServer);
+      
     }
     
 </script>
@@ -123,10 +168,10 @@
     <p>password</p> <input id="password" type="text">
     <button onClick="invioAccesso()" id="invioAccesso">accedi</button>
   </div>
-  <div id="ricezioneMessaggioServer">
+  <section id="ricezioneMessaggioServer">
     <p id="messaggioServer" style="display: none;">messaggiServer</p>
-    <textarea id="ricezione" readonly style="display: none;"></textarea><br>
-  </div>
+    <div id="ricezione" readonly style="display: none; border: 50em;"></div><br>
+  </section>
   
   <input id="messaggioDaInviare" type="text" style="display: none;">
   <button onClick="invioMessaggio()" style="display: none;" id="invioMessaggi" >invia messaggio</button>
