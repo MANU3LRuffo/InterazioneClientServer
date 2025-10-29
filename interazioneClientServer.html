@@ -9,6 +9,7 @@
     }
     body{
       background-color: black;
+      text-align: center;
     }
     textarea {
       width: 300px;
@@ -17,6 +18,7 @@
       background-color: black;
       border-color: green;
       color: green;
+      margin: auto;
     }
     input {
       width: 300px;
@@ -34,13 +36,15 @@
     }
     input{
       text-align: center;
+      margin: auto;
     }
     button{
       background-color: black;
       color: green;
       border-color: green;
       font-size: 22px;
-
+      margin: auto;
+      margin-top: 1em;
     }
     #messaggioDiErrore{
       font-size: 25px;
@@ -74,7 +78,6 @@
     }
     }
     
-
     function invioAccesso(){
     let nomeUtenteDaInserire = document.getElementById("nomeUtente");
     let passwordDaInserire = document.getElementById("password");
@@ -83,12 +86,12 @@
     ws.send(messaggioDaInviare);
 
     }
+
     function chiudiLaConnessione(){
-      //document.getElementById("ricevuta").textContent="ricevuta: connessione fallita";
       console.log("non sei riuscito a entrare");
       ws.close();
-      
     }
+
     function cambiaSchermataAccesso(){
       document.getElementById("ricezione").style.display="block";
       document.getElementById("nomeUtentePassword").style.display="none";
@@ -96,14 +99,21 @@
       document.getElementById("invioMessaggi").style.display="block";
       document.getElementById("messaggioDaInviare").style.display="block";
     }
+
     function cambiaSchermataConnessioneFallita(){
       document.getElementById("ricezioneMessaggioServer").style.display="none";
       document.getElementById("messaggioDiErrore").style.display="block";
 
     }
+
+    function ricaricaPagina(){
+      location.reload();
+    }
+
     function invioMessaggio(){
 
     }
+    
 </script>
 </head>
 <body>
@@ -120,6 +130,7 @@
   
   <input id="messaggioDaInviare" type="text" style="display: none;">
   <button onClick="invioMessaggio()" style="display: none;" id="invioMessaggi" >invia messaggio</button>
+  <button onclick="ricaricaPagina()">ricaricaPagina</button>
   <p id="messaggioDiErrore" style="display: none;">
     DAI SU CHE LA PROSSIMA VOLTA CHE FAI L'ACCESSO CON IL NOME/PASSWORD GIUSTA CE LA FAI</p>
 </body>
