@@ -79,7 +79,22 @@
       cambiaSchermataConnessioneFallita();
       chiudiLaConnessione();
     }
+
+    let stringa = messaggioRicevuto.data;
+
+    let host;
+
+    let utentiInCollegamento = "";
+    if(stringa.startsWith("U")){
+
+      host= stringa.split("|");
+      for(i=1; i< host.length; i++){
+
+      }
     }
+  }
+    
+  
     
     function invioAccesso(){
     nomeUtente = document.getElementById("nomeUtente").value;
