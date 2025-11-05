@@ -62,7 +62,8 @@
     "use strict";
     //Inizio dialogo
     let nomeUtente;
-    let ws = new WebSocket("ws://10.1.0.52:8090/chat25/5i2");
+   // ws://10.1.0.52:8090/chat25/5i2
+    let ws = new WebSocket("ws://10.3.2.178:8765");
     ws.onmessage = gestoreRicezione;
     console.log("è iniziato il dialogo");
 
@@ -138,9 +139,9 @@
       }
 
       if(data.getDate() < 10){
-        dataIntera = dataIntera + "0" + data.getDate() + "-";
+        dataIntera = dataIntera + "0" + data.getDate();
       } else{
-        dataIntera = dataIntera + data.getDate() + "-";
+        dataIntera = dataIntera + data.getDate();
       }
 
       dataIntera = dataIntera + "T";
@@ -158,9 +159,9 @@
       }
 
       if(data.getSeconds() < 10){
-        dataIntera = dataIntera + "0" + data.getSeconds() + "|";
+        dataIntera = dataIntera + "0" + data.getSeconds();
       } else{
-        dataIntera = dataIntera + data.getSeconds() + "|";
+        dataIntera = dataIntera + data.getSeconds();
       }
 
       
