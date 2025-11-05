@@ -62,8 +62,9 @@
     "use strict";
     //Inizio dialogo
     let nomeUtente;
-   // ws://10.1.0.52:8090/chat25/5i2
-    let ws = new WebSocket("ws://10.3.2.178:8765");
+   // server classe ws://10.1.0.52:8090/chat25/5i2
+   // server michele e fabio ws://10.3.2.178:8765
+    let ws = new WebSocket("ws://10.3.3.12:8080/ServerFiorucciScarabotta/nino");
     ws.onmessage = gestoreRicezione;
     console.log("è iniziato il dialogo");
 
@@ -90,7 +91,7 @@
 
       host= stringa.split("|");
       for(i=1; i< host.length; i++){
-
+        utentiInCollegamento =utentiInCollegamento + "<br>" + host[i];
       }
     }
   }
@@ -114,12 +115,14 @@
       document.getElementById("ricezione").style.display="block";
       document.getElementById("nomeUtentePassword").style.display="none";
       document.getElementById("messaggioServer").style.display="block";
+      
       document.getElementById("invioMessaggi").style.display="block";
       document.getElementById("messaggioDaInviare").style.display="block";
     }
 
     function cambiaSchermataConnessioneFallita(){
       document.getElementById("ricezioneMessaggioServer").style.display="none";
+      document.getElementById("ricezioneUtenti").style.display="none";
       document.getElementById("messaggioDiErrore").style.display="block";
 
     }
@@ -169,10 +172,11 @@
       let paese = "IT";
       let tp = "text/plain";
       let messaggio = document.getElementById("messaggioDaInviare").value ;
-      let messaggioDalServer = "M" + "|" + nomeUtente +
+      let messaggioDsMandareAlServer = "M" + "|" + nomeUtente +
       "|" + tempo + "|" + paese + "|" + tp + "|" + messaggio;
-      ws.send(messaggioDalServer);
+      ws.send(messaggioDsMandareAlServer);
       
+      document.getElementById("messaggioDaInviare").innerText="";
     }
     
 </script>
